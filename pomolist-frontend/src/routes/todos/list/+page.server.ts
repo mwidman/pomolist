@@ -5,8 +5,6 @@ type TodoSummary = {
     title: string,
 };
 
-/*
-*/
 export function load(): { todos: TodoSummary[] } {
     return {
         todos: list.map((todo) => ({
