@@ -1,4 +1,5 @@
-import { list } from '$lib/data';
+import type { Actions } from './$types';
+import { list, createTodo } from '$lib/data';
 
 type TodoSummary = {
     id: string,
@@ -13,3 +14,14 @@ export function load(): { todos: TodoSummary[] } {
         }))
     };
 }
+
+export const actions = {
+    create: async ({ request }) => {
+        const data = await request.formData();
+        const id = await createTodo({
+            title: data.get('title'),
+            description: data.get('description'),
+            priority: data.get('priority'),
+        });
+    }
+} satisfies Actions

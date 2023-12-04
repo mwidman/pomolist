@@ -29,6 +29,23 @@ export const list = [
     }
 ];
 
+type CreateTodoDTO = {
+    title: string;
+    description: string;
+    priority: number;
+};
+
+export async function createTodo(createTodoDTO: CreateTodoDTO): Promise<string> {
+    const id = crypto.randomUUID();
+    list.push({
+        id,
+        ...createTodoDTO,
+        completed: false,
+    });
+
+    return id;
+}
+
 export async function toggleComplete(id: string, completed: boolean) {
     const todo = list.find((item) => item.id === id);
 
