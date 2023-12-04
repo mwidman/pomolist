@@ -1,9 +1,11 @@
 import { list } from '$lib/data';
 
 type Todo = {
+    slug: string;
     title: string;
     description: string;
     priority: number;
+    completed: boolean;
 };
 
 export function load({ params }): { todo: Todo } {
@@ -12,6 +14,16 @@ export function load({ params }): { todo: Todo } {
     if (!todo) throw Error('Todo not found');
 
     return {
-        todo
+        todo: {
+            slug: todo.id,
+            ...todo
+        }
     };
+}
+
+export const actions = {
+    markComplete: async ({ request }) => {
+        const data = await request.formData();
+        console.log(data);
+    }
 }

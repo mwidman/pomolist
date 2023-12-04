@@ -8,6 +8,24 @@
     <div class="priority">P{ data.todo.priority }</div>
   </div>
   <p>{ data.todo.description }</p>
+  <form class="complete" method="PUT" action="?/markComplete">
+    <label>
+      Complete: 
+      <input type="checkbox" 
+        checked={data.todo.completed}
+        on:change={async (e) => {
+          const completed = e.currentTarget.checked;
+
+          await fetch(`/todos/${data.todo.slug}`, {
+            method: 'PUT',
+            body: JSON.stringify({ completed }),
+            headers: {
+              'Content-type': 'application/json'
+            }
+          });
+        }}>
+    </label>
+  </form>
 </div>
 
 <style>
@@ -26,6 +44,10 @@
   .priority {
     font-size: 2em;
     font-weight: bold;
+  }
+
+  .complete {
+    text-align: right;
   }
 
 </style>
