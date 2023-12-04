@@ -4,7 +4,7 @@
 
 <ul>
 {#each data.todos as todo}
-    <li><a href='/todos/{todo.slug}'>{todo.title}</a></li>
+    <li><a href='/todos/{todo.id}'>{todo.title}</a></li>
 {/each}
 </ul>
 

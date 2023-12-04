@@ -1,7 +1,7 @@
 import { list } from '$lib/data';
 
 type Todo = {
-    slug: string;
+    id: string;
     title: string;
     description: string;
     priority: number;
@@ -9,15 +9,12 @@ type Todo = {
 };
 
 export function load({ params }): { todo: Todo } {
-    const todo = list.find((item) => item.id === params.slug);
+    const todo = list.find((item) => item.id === params.id);
 
     if (!todo) throw Error('Todo not found');
 
     return {
-        todo: {
-            slug: todo.id,
-            ...todo
-        }
+        todo
     };
 }
 
