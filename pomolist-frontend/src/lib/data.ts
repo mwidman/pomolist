@@ -35,6 +35,10 @@ type CreateTodoDTO = {
     priority: number;
 };
 
+type DeleteTodoDTO = {
+    id: string;
+};
+
 export async function createTodo(createTodoDTO: CreateTodoDTO): Promise<string> {
     const id = crypto.randomUUID();
     list.push({
@@ -53,4 +57,13 @@ export async function toggleComplete(id: string, completed: boolean) {
     if (!todo) throw Error('Invalid todo');
 
     todo.completed = completed;
+}
+
+
+export async function deleteTodo(deleteTodoDTO: DeleteTodoDTO): Promise<void> {
+    const { id } = deleteTodo;
+
+    const idx = list.findIndex((item) => item.id === id);
+
+    list.splice(idx, 1);
 }

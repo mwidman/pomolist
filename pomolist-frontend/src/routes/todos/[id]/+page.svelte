@@ -26,6 +26,10 @@
         }}>
     </label>
   </form>
+  <form method="POST" action="?/delete">
+    <input type="hidden" name="id" value={ data.todo.id } />
+    <button on:click={() => window.location.href = "/todos/list"}>&#x1F5D1;</button>
+  </form>
 </div>
 
 <style>

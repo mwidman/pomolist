@@ -1,4 +1,7 @@
-import { list } from '$lib/data';
+import { redirect } from '@sveltejs/kit';
+
+import type { Actions, PageServerLoad } from './$types';
+import { list, deleteTodo } from '$lib/data';
 
 type Todo = {
     id: string;
@@ -8,19 +11,23 @@ type Todo = {
     completed: boolean;
 };
 
-export function load({ params }): { todo: Todo } {
+export const load = (({ params }): { todo: Todo } => {
     const todo = list.find((item) => item.id === params.id);
 
-    if (!todo) throw Error('Todo not found');
+    if (!todo) {
+        throw redirect(302, '/todos/list');
+    };
 
     return {
         todo
     };
-}
+}) satisfies PageServerLoad;
 
 export const actions = {
-    markComplete: async ({ request }) => {
+    delete: async ({ request }) => {
         const data = await request.formData();
-        console.log(data);
-    }
-}
+        const id = data.get('id');
+        console.log(id);
+        await deleteTodo(data.get('id'));
+    },
+} satisfies Actions;
