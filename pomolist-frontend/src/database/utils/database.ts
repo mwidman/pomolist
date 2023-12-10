@@ -39,19 +39,14 @@ export class MongooseConnection {
 
 
     async connect() {
-        console.log(`MongoDB URL = ${MONGO_DB_URL}`);
         if (MongooseConnection._status != ConnectionStatus.disconnected) {
             console.log('Already connected');
             return;
         }
 
         try {
-            console.log(`MongoDB URL = ${MONGO_DB_URL}`);
             const connection = await mongoose.connect(MONGO_DB_URL ?? '');
             MongooseConnection._status = ConnectionStatus.connected;
-            console.log(`Connection = ${connection}`)
-            console.dir(connection);
-
         } catch (err) {
             await mongoose.disconnect();
         }
