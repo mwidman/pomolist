@@ -16,12 +16,20 @@ export function load(): { todos: TodoSummary[] } {
 }
 
 export const actions = {
-    create: async ({ request }) => {
+    create: async ({ request, fetch }) => {
         const data = await request.formData();
-        const id = await createTodo({
+        const todo = {
             title: data.get('title'),
             description: data.get('description'),
             priority: data.get('priority'),
+        };
+        const id = await fetch("/api/todos", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(todo),
         });
     }
 } satisfies Actions
