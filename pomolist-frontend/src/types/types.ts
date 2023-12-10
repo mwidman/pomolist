@@ -5,3 +5,8 @@ export type TodoModelType = {
     completed: boolean;
     priority: number;
 };
+
+export type TodoSummary = {
+    id: string,
+    title: string,
+};
