@@ -14,9 +14,8 @@ export const GET: RequestHandler = async () => {
     return json(todos);
 };
 
-export const POST: RequestHandler = async ({ params, request }) => {
+export const POST: RequestHandler = async ({ request }) => {
     let inputTodo = await request.json();
-    console.dir(inputTodo);
 
     const mongoose = MongooseConnection.getInstance();
 
