@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 import type { TodoModelType } from '../../../types/types';
 
-const TodoSchema = new mongoose.Schema({
+const TodoSchema = new mongoose.Schema<TodoModelType>({
     title: String,
     description: String,
     completed: Boolean,

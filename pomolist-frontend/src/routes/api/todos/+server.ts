@@ -13,3 +13,18 @@ export const GET: RequestHandler = async () => {
 
     return json(todos);
 };
+
+export const POST: RequestHandler = async ({ params, request }) => {
+    let inputTodo = await request.json();
+    console.dir(inputTodo);
+
+    const mongoose = MongooseConnection.getInstance();
+
+    await mongoose.connect();
+    const todo = new TodoModel(inputTodo);
+    await todo.save();
+
+    await mongoose.disconnect();
+
+    return new Response(null, { status: 201 });
+}
