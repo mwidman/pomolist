@@ -1,13 +1,22 @@
-<script>
+<script lang="ts">
     export let data;
+    let showCompleted: boolean;
+
+    $: filteredTodos = showCompleted
+        ? data.todos
+        : data.todos.filter((todo) => !todo.completed)
 </script>
 
 <ul>
-{#each data.todos as todo (todo.id)}
+{#each filteredTodos as todo (todo.id)}
     <li class="card w-full shadow-md my-8"><a href='/todos/{todo.id}'>{todo.title}</a></li>
 {/each}
 </ul>
 
+<label class="flex justify-center mb-4">
+<input class="inline-block mr-1" type="checkbox" bind:checked={showCompleted}/>
+Show Completed
+</label>
 <hr class="w-full" />
 <form method="POST" action="?/create">
     <div class="flex flex-row justify-between items-center">

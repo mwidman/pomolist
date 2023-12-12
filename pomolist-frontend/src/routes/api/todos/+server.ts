@@ -16,6 +16,7 @@ export const GET: RequestHandler = async () => {
 
 export const POST: RequestHandler = async ({ request }) => {
     let inputTodo = await request.json();
+    inputTodo.completed = false;
 
     const mongoose = MongooseConnection.getInstance();
 

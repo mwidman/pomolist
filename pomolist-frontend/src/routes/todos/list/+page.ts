@@ -7,7 +7,8 @@ export async function load({ fetch }): Promise<{ todos: TodoSummary[] }> {
     return {
         todos: todos.map((todo: TodoModelType) => ({
             id: todo._id,
-            title: todo.title
+            title: todo.title,
+            completed: todo.completed,
         }))
     };
 }

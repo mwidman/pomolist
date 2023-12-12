@@ -9,4 +9,5 @@ export type TodoModelType = {
 export type TodoSummary = {
     id: string,
     title: string,
+    completed: boolean,
 };
