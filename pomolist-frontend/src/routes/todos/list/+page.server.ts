@@ -5,7 +5,6 @@ import type { TodoModelType, TodoSummary } from '../../../types/types';
 export async function load({ fetch }): Promise<{ todos: TodoSummary[] }> {
     const response = (await fetch("/api/todos"));
     const todos = await response.json();
-    console.dir(todos);
 
     return {
         todos: todos.map((todo: TodoModelType) => ({

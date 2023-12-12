@@ -3,11 +3,17 @@ import type { RequestHandler } from './$types';
 import { MongooseConnection } from '../../../../database/utils/database';
 import { TodoModel } from '../../../../database/domains/todos/model';
 
-/*
-export const GET: RequestHandler = async () => {
-    return new Response();
+export const GET: RequestHandler = async ({ params }) => {
+    const { id } = params;
+
+    const mongoose = MongooseConnection.getInstance();
+
+    await mongoose.connect();
+    const todo = await TodoModel.findById(id).lean();
+    await mongoose.disconnect();
+
+    return new Response(JSON.stringify(todo), { status: 200 });
 };
-*/
 
 export const PUT: RequestHandler = async ({ params, request }) => {
     const { id } = params;
