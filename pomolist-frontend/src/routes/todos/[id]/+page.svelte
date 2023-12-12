@@ -18,7 +18,7 @@
         on:change={async (e) => {
           const completed = e.currentTarget.checked;
 
-          await fetch(`/todos/${data.todo.id}`, {
+          await fetch(`/api/todos/${data.todo.id}`, {
             method: 'PUT',
             body: JSON.stringify({ completed }),
             headers: {
