@@ -1,7 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 
 import type { Actions, PageServerLoad } from './$types';
-import { list, deleteTodo } from '$lib/data';
 
 type Todo = {
     id: string;
@@ -13,11 +12,10 @@ type Todo = {
 
 export const load = ( async ({ params, fetch }): Promise<{ todo: Todo }> => {
     const response = await fetch(`/api/todos/${params.id}`);
-    const todo = response.json();
+    const todo = await response.json();
 
     if (!todo) {
         throw error(400, "Not found");
-        //throw redirect(302, '/todos/list');
     };
 
     return {
@@ -32,5 +30,7 @@ export const actions = {
         await fetch(`/api/todos/${id}`, {
             method: 'DELETE'
         });
+        // Must redirect since this Todo no longer exists.
+        throw redirect(302, '/todos/list')
     },
 } satisfies Actions;
