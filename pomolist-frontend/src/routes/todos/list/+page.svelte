@@ -3,7 +3,7 @@
 </script>
 
 <ul>
-{#each data.todos as todo}
+{#each data.todos as todo (todo.id)}
     <li class="card w-full shadow-md my-8"><a href='/todos/{todo.id}'>{todo.title}</a></li>
 {/each}
 </ul>

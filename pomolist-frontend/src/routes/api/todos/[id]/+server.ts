@@ -2,6 +2,7 @@ import type { RequestHandler } from './$types';
 
 import { MongooseConnection } from '../../../../database/utils/database';
 import { TodoModel } from '../../../../database/domains/todos/model';
+import { error } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params }) => {
     const { id } = params;
@@ -11,6 +12,10 @@ export const GET: RequestHandler = async ({ params }) => {
     await mongoose.connect();
     const todo = await TodoModel.findById(id).lean();
     await mongoose.disconnect();
+
+    if (!todo) {
+        throw error(404);
+    }
 
     return new Response(JSON.stringify(todo), { status: 200 });
 };
