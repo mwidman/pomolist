@@ -39,27 +39,38 @@ export class MongooseConnection {
 
 
     async connect() {
-        if (MongooseConnection._status != ConnectionStatus.disconnected) {
+        if (MongooseConnection._status === ConnectionStatus.connected) {
             console.log('Already connected');
             return;
         }
 
+        if (mongoose.connections.length > 0) {
+            MongooseConnection._status = <ConnectionStatus>mongoose.connections[0].readyState;
+            if (MongooseConnection._status === ConnectionStatus.connected) {
+                console.log('Another connection already exists');
+                return;
+            }
+        }
+
         try {
-            const connection = await mongoose.connect(MONGO_DB_URL ?? '');
+            await mongoose.connect(MONGO_DB_URL ?? '');
             MongooseConnection._status = ConnectionStatus.connected;
+            console.log('Succesfully connected to MongoDB');
         } catch (err) {
             await mongoose.disconnect();
         }
     }
 
     async disconnect() {
-        if (MongooseConnection._status != ConnectionStatus.connected) {
+        if (MongooseConnection._status === ConnectionStatus.disconnected) {
             console.log('Already disconnected');
+            return;
         }
 
         try {
             await mongoose.disconnect();
             MongooseConnection._status = ConnectionStatus.disconnected;
+            console.log('Succesfully disconnected from MongoDB');
         } catch (err) {
             console.log('Error disconnecting from MongoDB');
         }
