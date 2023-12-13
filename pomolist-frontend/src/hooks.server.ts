@@ -1,4 +1,4 @@
-import type { Handle } from "@sveltejs/kit";
+import { redirect, type Handle, error } from "@sveltejs/kit";
 import jwt from 'jsonwebtoken';
 
 import { JWT_ACCESS_SECRET } from "$env/static/private";
@@ -8,6 +8,7 @@ import type { UserModelType } from "./types/types";
 
 export const handle: Handle = async ({ event, resolve }) => {
     const authCookie = event.cookies.get('AuthorizationToken');
+    let user;
 
     if (authCookie) {
         // Remove 'Bearer' prefix
@@ -21,7 +22,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
             const mongoose = MongooseConnection.getInstance();
             await mongoose.connect();
-            const user = await UserModel.findById<UserModelType>(jwtUser.id).lean();
+            user = await UserModel.findById<UserModelType>(jwtUser.id).lean();
             await mongoose.disconnect();
 
             if (!user) {
@@ -37,6 +38,10 @@ export const handle: Handle = async ({ event, resolve }) => {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    if (event.url.pathname.startsWith('/todos') && !(authCookie || user)) {
+        throw error(401, 'You must login before accessing this page.');
     }
 
     return await resolve(event);
