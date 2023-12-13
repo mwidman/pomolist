@@ -11,11 +11,12 @@ export async function createUser(email: string, password: string): Promise<void>
 
     const mongoose = MongooseConnection.getInstance();
     await mongoose.connect();
-    const todo = new UserModel({
+    const user = new UserModel({
         email,
         password: encryptedPassword,
+        todos: [],
     });
-    await todo.save();
+    await user.save();
     await mongoose.disconnect();
 }
 
