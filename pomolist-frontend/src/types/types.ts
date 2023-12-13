@@ -11,3 +11,13 @@ export type TodoSummary = {
     title: string,
     completed: boolean,
 };
+
+export type UserModelType = {
+    _id: string;
+    username: string;
+    email: string;
+    password: string;
+    createdAt: Date;
+    updatedAt: Date;
+    todos: TodoModelType[];
+}
