@@ -4,6 +4,7 @@ export type TodoModelType = {
     description: string;
     completed: boolean;
     priority: number;
+    user: UserModelType;
 };
 
 export type TodoSummary = {
@@ -19,5 +20,4 @@ export type UserModelType = {
     password: string;
     createdAt: Date;
     updatedAt: Date;
-    todos: TodoModelType[];
 }

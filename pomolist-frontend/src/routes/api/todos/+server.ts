@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 import { TodoModel } from '../../../database/domains/todos/model';
@@ -12,16 +13,12 @@ export const GET: RequestHandler = async ({ locals }) => {
         throw error(401, 'You must be logged in.')
     }
 
-    const mongoose = MongooseConnection.getInstance();
-    await mongoose.connect();
-    const dbUser = <TodoModelType[]>await UserModel
-        .findById(user.id)
-        .lean()
-        .populate('todos')
-        .select('todos');
-    await mongoose.disconnect();
-
-    const todos = dbUser.todos ?? [];
+    const mongooseConnection = MongooseConnection.getInstance();
+    await mongooseConnection.connect();
+    const todos = <TodoModelType[]>await TodoModel
+        .find({ user: new mongoose.Types.ObjectId(user.id)})
+        .lean();
+    await mongooseConnection.disconnect();
     return json(todos);
 };
 
@@ -33,18 +30,16 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     }
 
     const inputTodo = await request.json();
-    inputTodo.completed = false;
 
-    const mongoose = MongooseConnection.getInstance();
-
-    await mongoose.connect();
-    const todo = new TodoModel(inputTodo);
+    const mongooseConnection = MongooseConnection.getInstance();
+    await mongooseConnection.connect();
+    const todo = new TodoModel({
+        ...inputTodo,
+        completed: false,
+        user: new mongoose.Types.ObjectId(user.id),
+    });
     await todo.save();
-    await UserModel
-        .findByIdAndUpdate(user.id, 
-            { $push: { "todos": todo._id } }
-        );
-    await mongoose.disconnect();
+    await mongooseConnection.disconnect();
 
     return new Response(null, { status: 201 });
 }

@@ -14,7 +14,6 @@ export async function createUser(email: string, password: string): Promise<void>
     const user = new UserModel({
         email,
         password: encryptedPassword,
-        todos: [],
     });
     await user.save();
     await mongoose.disconnect();

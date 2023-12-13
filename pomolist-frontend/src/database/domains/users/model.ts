@@ -24,12 +24,6 @@ const UserSchema = new mongoose.Schema<UserModelType>({
     },
     createdAt: Date,
     updatedAt: Date,
-    todos: [
-        { 
-            type: Schema.ObjectId,
-            ref: 'Todo'
-        }
-    ],
 });
 
 UserSchema.plugin(mongooseLeanId);
